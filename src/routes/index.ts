@@ -1,21 +1,7 @@
 import { Router } from 'express';
+import appointmentsRouter from './appointments.routes';
 
-interface Usuario {
-  name: string;
-  email: string;
-}
 const routes = Router();
-const usuarios: Usuario[] = [];
-routes.post('/users', (request, response) => {
-  const { name, email } = request.body;
-  const user = {
-    name,
-    email,
-  };
-
-  usuarios.push(user);
-
-  return response.json(usuarios);
-});
+routes.use('/appointments', appointmentsRouter);
 
 export default routes;
