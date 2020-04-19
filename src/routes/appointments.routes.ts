@@ -1,3 +1,7 @@
+/**
+ * Soc: Separation od Concerns - Separançao de preocupaçoes
+ */
+
 import { Router } from 'express';
 import { startOfHour, parseISO } from 'date-fns';
 
@@ -5,6 +9,11 @@ import AppointmetsRepository from '../repositories/AppointmentsRepository';
 
 const appointmetRoutes = Router();
 const appointmetRepository = new AppointmetsRepository();
+
+appointmetRoutes.get('/', (request, response) => {
+  const appointments = appointmetRepository.all();
+  return response.json(appointments);
+});
 
 // rota de agendamentos
 appointmetRoutes.post('/', (request, response) => {
