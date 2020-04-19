@@ -23,6 +23,7 @@
         "prettier"
     ],
     "rules": {
+<<<<<<< HEAD
       "prettier/prettier":"error",
       "class-methods-use-this":"off",
       "import/extensions":[
@@ -32,10 +33,20 @@
           "ts":"never"
         }
       ]
+=======
+        "prettier/prettier": "error",
+        "import/extensions": [
+            "error",
+            "ignorePackages",
+            {
+                "ts": "never"
+            }
+        ]
+>>>>>>> 751c1d2ecc7aa7eaa1fa6acaf4673630d6190246
     },
     "settings": {
-      "import/resolver":{
-        "typescript":{}
-      }
+        "import/resolver": {
+            "typescript": {}
+        }
     }
 }
