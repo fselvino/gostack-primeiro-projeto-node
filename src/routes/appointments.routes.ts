@@ -2,6 +2,8 @@
  * Soc: Separation od Concerns - Separançao de preocupaçoes
  */
 
+// DTO - Data Transfer Object - Objeto de transferencia de dados
+
 import { Router } from 'express';
 import { startOfHour, parseISO } from 'date-fns';
 
@@ -32,7 +34,10 @@ appointmetRoutes.post('/', (request, response) => {
       .json({ messagem: 'Já existe agendamento para esse horario' });
   }
 
-  const appointment = appointmetRepository.create(provider, parseDate);
+  const appointment = appointmetRepository.create({
+    provider,
+    date: parseDate,
+  });
 
   return response.json(appointment);
 });
