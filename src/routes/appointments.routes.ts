@@ -1,14 +1,8 @@
 import { Router } from 'express';
-import { uuid } from 'uuidv4'; // cria um id universal unico
 import { startOfHour, parseISO, isEqual } from 'date-fns';
+import Appointment from '../model/Appointment';
 
 const appointmetRoutes = Router();
-
-interface Appointment {
-  id: string;
-  provider: string;
-  date: Date;
-}
 
 // array de appointments
 const appointments: Appointment[] = [];
@@ -21,15 +15,11 @@ appointmetRoutes.post('/', (request, response) => {
   const parseDate = startOfHour(parseISO(date));
 
   // cria objeto agendamento
-  const appointment = {
-    id: uuid(),
-    provider,
-    date: parseDate,
-  };
+  const appointment = new Appointment(provider, parseDate);
 
   // faz uma consulta e compara a data persistida com a data vinda da aplicaçao
-  const findAppointmentInSameDate = appointments.find(appointment =>
-    isEqual(parseDate, appointment.date),
+  const findAppointmentInSameDate = appointments.find(appoint =>
+    isEqual(parseDate, appoint.date),
   );
 
   // Se existir a data retorna erro de agendamento.
