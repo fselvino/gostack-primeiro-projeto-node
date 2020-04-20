@@ -4,10 +4,13 @@
 
 // DTO - Data Transfer Object - Objeto de transferencia de dados
 
+// Rota: Recebe a requisiçao, chamar outro arquivo, devolver uma resposta
+
 import { Router } from 'express';
-import { startOfHour, parseISO } from 'date-fns';
+import { parseISO } from 'date-fns';
 
 import AppointmetsRepository from '../repositories/AppointmentsRepository';
+import CreateAppointmentService from '../services/CreateAppointmetService';
 
 const appointmetRoutes = Router();
 const appointmetRepository = new AppointmetsRepository();
@@ -19,26 +22,23 @@ appointmetRoutes.get('/', (request, response) => {
 
 // rota de agendamentos
 appointmetRoutes.post('/', (request, response) => {
-  const { provider, date } = request.body;
+  try {
+    const { provider, date } = request.body;
 
-  // formata a data vindo da aplicaçao
-  const parseDate = startOfHour(parseISO(date));
+    // formata a data vindo da aplicaçao
+    const parseDate = parseISO(date);
+    const createAppointment = new CreateAppointmentService(
+      appointmetRepository,
+    );
 
-  // realiza a busca por uma data ja agendada
-  const findAppointmentInSameDate = appointmetRepository.findByDate(parseDate);
+    const appointment = createAppointment.execute({
+      date: parseDate,
+      provider,
+    });
 
-  // Se existir a data retorna erro de agendamento.
-  if (findAppointmentInSameDate) {
-    return response
-      .status(400)
-      .json({ messagem: 'Já existe agendamento para esse horario' });
+    return response.json(appointment);
+  } catch (err) {
+    return response.status(400).json({ error: err.message });
   }
-
-  const appointment = appointmetRepository.create({
-    provider,
-    date: parseDate,
-  });
-
-  return response.json(appointment);
 });
 export default appointmetRoutes;
