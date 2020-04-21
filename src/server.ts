@@ -1,3 +1,5 @@
+import 'reflect-metadata';
+
 import express, { response, request } from 'express';
 import routes from './routes';
 
