@@ -26,6 +26,7 @@ class Appointment {
    * Um para Muitos (OneToMany)
    * Muitos para Muitos(ManyToMany)
    */
+  // propriedade de User pode ser qualquer nome
   @ManyToOne(() => User)
   @JoinColumn({
     name: 'provider_id',

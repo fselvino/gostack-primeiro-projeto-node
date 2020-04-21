@@ -2,6 +2,7 @@ import { startOfHour } from 'date-fns';
 import { getCustomRepository } from 'typeorm';
 import Appointment from '../models/Appointment';
 import AppointmentsRepository from '../repositories/AppointmentsRepository';
+
 /**
  * [ * ] Recebimento das informaçoes
  * [ * ] Tratativas de erros/excessoes
@@ -10,13 +11,16 @@ import AppointmentsRepository from '../repositories/AppointmentsRepository';
 
 interface RequestDTO {
   date: Date;
-  provider: string;
+  provider_id: string;
 }
 /**
  * Dependency Inversion (SOLID)
  */
 class CreateAppointmentService {
-  public async execute({ date, provider }: RequestDTO): Promise<Appointment> {
+  public async execute({
+    date,
+    provider_id,
+  }: RequestDTO): Promise<Appointment> {
     const appointmensReprossitory = getCustomRepository(AppointmentsRepository);
     const appointmentDate = startOfHour(date);
 
@@ -31,7 +35,7 @@ class CreateAppointmentService {
     }
 
     const appointment = appointmensReprossitory.create({
-      provider,
+      provider_id,
       date: appointmentDate,
     });
 
